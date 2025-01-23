@@ -1,23 +1,28 @@
 use macroquad::prelude::*;
 
+struct Triangle {
+    x: f32,
+    y: f32,
+    rot: f32
+}
+
 #[macroquad::main("MyGame")]
 async fn main() {
-    let mut x = 10.0;
-    let mut y = 10.0;
+    let mut triangle = Triangle {
+        x: screen_width() / 2., y: screen_height() / 2., rot: 0.
+    };
     loop {
         if is_key_down(KeyCode::A) {
-            x = x - 1.0;
+            triangle.rot += 2.;
         }
         if is_key_down(KeyCode::D) {
-            x = x + 1.0;
-        } 
-        if is_key_down(KeyCode::S) {
-            y = y + 1.0;
+            triangle.rot -= 2.;
         }
         if is_key_down(KeyCode::W) {
-            y = y - 1.0;
+            triangle.x -= triangle.rot.to_radians().sin();
+            triangle.y -= triangle.rot.to_radians().cos();
         }
-        draw_rectangle(x, y, 1.0, 1.0, RED);
+        draw_rectangle(triangle.x, triangle.y, 10., 10., RED);
         next_frame().await
     }
 }
