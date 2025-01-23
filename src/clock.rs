@@ -5,6 +5,7 @@ pub async fn main() {
     let x = screen_width() / 2.;
     let y = screen_height() / 2.;
     let radius = screen_width().min(screen_height()) / 2.;
+    let mut secs: u8 = 0;
     loop {
         draw_circle(x, y, radius, WHITE);
         draw_circle(x, y, radius * 0.9, BLACK);
@@ -32,6 +33,18 @@ pub async fn main() {
             );
         }
 
+        let grau: f32 = -(secs as f32 / 60.0) * 360.0;
+        draw_line(
+            x,
+            y,
+            x + (grau.to_radians().cos() * radius * 0.68),
+            y + (-grau.to_radians().sin() * radius * 0.68),
+            10.,
+            RED,
+        );
+
+        secs += 1;
+        secs %= 60;
         next_frame().await
     }
 }

@@ -3,5 +3,5 @@ mod square;
 
 #[macroquad::main("MyGame")]
 async fn main() {
-    square::main().await;
+    clock::main().await;
 }

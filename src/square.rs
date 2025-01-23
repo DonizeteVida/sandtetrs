@@ -8,10 +8,7 @@ struct Square {
 
 impl Square {
     fn new(position: Vec2, color: Color) -> Self {
-        Square {
-            position,
-            color,
-        }
+        Square { position, color }
     }
 
     fn replace(&mut self, other: Square) -> Self {
@@ -21,12 +18,9 @@ impl Square {
 
 pub async fn main() {
     let mut rotation: f32 = 90.;
-    let mut squares: Vec<Square> = (0..1000).map(|_| {
-        Square::new(
-            Vec2::new(screen_width() / 2., screen_height() / 2.),
-            RED,
-        )
-    }).collect();
+    let mut squares: Vec<Square> = (0..1)
+        .map(|_| Square::new(Vec2::new(screen_width() / 2., screen_height() / 2.), RED))
+        .collect();
 
     loop {
         if is_key_down(KeyCode::A) {
@@ -45,16 +39,12 @@ pub async fn main() {
         squares.insert(0, last);
 
         for square in squares.iter_mut() {
-            if (square.position.x - last.position.x).abs() > 20. || (square.position.y - last.position.y).abs() > 20.{
+            if (square.position.x - last.position.x).abs() > 20.
+                || (square.position.y - last.position.y).abs() > 20.
+            {
                 last = square.replace(last);
             }
-            draw_rectangle(
-                square.position.x, 
-                square.position.y, 
-                5., 
-                5., 
-                square.color
-            );
+            draw_rectangle(square.position.x, square.position.y, 5., 5., square.color);
         }
         next_frame().await;
     }
